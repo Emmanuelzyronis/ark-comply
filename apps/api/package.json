@@ -1,0 +1,33 @@
+{
+  "name": "@arkcomply/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@arkcomply/types": "*",
+    "@fastify/cors": "^10.1.0",
+    "@fastify/jwt": "^10.2.2",
+    "@fastify/multipart": "^9.4.0",
+    "@neondatabase/serverless": "^0.10.4",
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^16.6.1",
+    "fastify": "^5.12.5",
+    "fastify-plugin": "^5.1.0",
+    "uuid": "^11.1.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20.19.43",
+    "@types/uuid": "^10.0.0",
+    "pino-pretty": "^11.3.0",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3"
+  }
+}
