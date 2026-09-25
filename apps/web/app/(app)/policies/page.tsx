@@ -36,6 +36,7 @@ export default function PoliciesPage() {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
+  const [uploadError, setUploadError] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchPolicies = async () => {
@@ -56,9 +57,10 @@ export default function PoliciesPage() {
   }, []);
 
   async function uploadFile(file: File) {
-    if (file.size > 25 * 1024 * 1024) { alert('File size must be under 25MB'); return; }
-    if (!file.name.endsWith('.pdf')) { alert('Only PDF files are supported'); return; }
-    if (policies.length >= 5) { alert('Maximum 5 policy documents allowed'); return; }
+    setUploadError('');
+    if (file.size > 25 * 1024 * 1024) { setUploadError('File is too large — maximum size is 25 MB. Please compress or split the document.'); return; }
+    if (!file.name.endsWith('.pdf')) { setUploadError('Only PDF files are supported. Please convert your document to PDF first.'); return; }
+    if (policies.length >= 5) { setUploadError('You have reached the 5-policy limit. Remove an existing policy to upload a new one.'); return; }
 
     setUploading(true);
     const form = new FormData();
@@ -67,7 +69,7 @@ export default function PoliciesPage() {
       await api.post('/api/policies/upload', form);
       await fetchPolicies();
     } catch (err) {
-      alert(err instanceof Error ? err.message : 'Upload failed');
+      setUploadError(err instanceof Error ? err.message : 'Upload failed — please try again or check your connection.');
     } finally {
       setUploading(false);
     }
@@ -93,15 +95,30 @@ export default function PoliciesPage() {
         </p>
       </div>
 
+      {/* Upload error */}
+      {uploadError && (
+        <div className="mb-4 p-4 bg-red-900/20 border border-red-800 rounded-lg text-red-400 text-sm flex items-start gap-2" role="alert">
+          <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" aria-hidden="true" />
+          <span>{uploadError}</span>
+        </div>
+      )}
+
       {/* Upload Zone */}
       <div
         onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
         onDragLeave={() => setDragOver(false)}
         onDrop={handleDrop}
-        onClick={() => fileInputRef.current?.click()}
-        className={`border-2 border-dashed rounded-card p-12 text-center mb-8 cursor-pointer transition-colors ${
+        onClick={() => { if (policies.length < 5) fileInputRef.current?.click(); }}
+        role="button"
+        tabIndex={policies.length >= 5 ? -1 : 0}
+        aria-label="Upload policy PDF — drag and drop or click to browse"
+        aria-disabled={policies.length >= 5}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (policies.length < 5) fileInputRef.current?.click(); }}}
+        className={`border-2 border-dashed rounded-card p-12 text-center mb-8 transition-colors ${
+          policies.length >= 5 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+        } ${
           dragOver ? 'border-primary-500 bg-primary-500/10' : 'border-brand-border hover:border-primary-500/50 hover:bg-white/5'
-        } ${policies.length >= 5 ? 'opacity-50 cursor-not-allowed' : ''}`}
+        }`}
       >
         <input
           ref={fileInputRef}

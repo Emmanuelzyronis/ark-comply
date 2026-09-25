@@ -71,8 +71,8 @@ export default function RegulationsPage() {
                     </div>
                   )}
                   <span className="text-xs text-brand-text-muted">{formatRelative(reg.ingested_at)}</span>
-                  <a href={`/analyze`} className="p-1.5 bg-primary-500/10 rounded text-primary-400 hover:bg-primary-500/20 transition-colors" title="Analyze">
-                    <Zap className="w-4 h-4" />
+                  <a href={`/analyze`} className="p-1.5 bg-primary-500/10 rounded text-primary-400 hover:bg-primary-500/20 transition-colors" aria-label={`Analyze ${reg.title}`}>
+                    <Zap className="w-4 h-4" aria-hidden="true" />
                   </a>
                 </div>
               </div>

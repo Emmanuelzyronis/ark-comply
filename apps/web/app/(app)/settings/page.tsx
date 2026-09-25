@@ -45,7 +45,10 @@ export default function SettingsPage() {
             {['EUR-Lex (EU AI Act)', 'US Federal Register', 'FCA (UK)', 'CBN (Nigeria)', 'SEC'].map((feed) => (
               <div key={feed} className="flex items-center justify-between p-2 bg-brand-bg rounded border border-brand-border">
                 <span className="text-brand-text-base">{feed}</span>
-                <span className="w-2 h-2 bg-emerald-400 rounded-full" />
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 bg-emerald-400 rounded-full" aria-hidden="true" />
+                  <span className="text-xs text-emerald-400">Active</span>
+                </span>
               </div>
             ))}
           </div>

@@ -59,12 +59,13 @@ export default function GapsPage() {
         <div className="flex items-center gap-4 flex-wrap">
           <Filter className="w-4 h-4 text-brand-text-muted" />
           <div className="flex items-center gap-2">
-            <span className="text-sm text-brand-text-muted">Severity:</span>
-            <div className="flex gap-1">
+            <span className="text-sm text-brand-text-muted" id="severity-label">Severity:</span>
+            <div className="flex gap-1" role="group" aria-labelledby="severity-label">
               {severities.map((s) => (
                 <button
                   key={s}
                   onClick={() => setSeverity(s)}
+                  aria-pressed={severity === s}
                   className={`px-3 py-1 rounded-pill text-xs font-medium transition-colors capitalize ${
                     severity === s ? 'bg-primary-500 text-white' : 'bg-brand-bg text-brand-text-muted hover:text-brand-text-base border border-brand-border'
                   }`}
@@ -75,12 +76,13 @@ export default function GapsPage() {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm text-brand-text-muted">Status:</span>
-            <div className="flex gap-1 flex-wrap">
+            <span className="text-sm text-brand-text-muted" id="status-label">Status:</span>
+            <div className="flex gap-1 flex-wrap" role="group" aria-labelledby="status-label">
               {statuses.map((s) => (
                 <button
                   key={s}
                   onClick={() => setStatus(s)}
+                  aria-pressed={status === s}
                   className={`px-3 py-1 rounded-pill text-xs font-medium transition-colors ${
                     status === s ? 'bg-primary-500 text-white' : 'bg-brand-bg text-brand-text-muted hover:text-brand-text-base border border-brand-border'
                   }`}
