@@ -116,13 +116,27 @@ export default function DashboardPage() {
           </Link>
         </div>
         {gaps.length === 0 ? (
-          <div className="text-center py-12">
-            <Shield className="w-12 h-12 text-brand-border mx-auto mb-3" />
-            <p className="text-brand-text-muted font-medium">No open gaps found</p>
-            <p className="text-sm text-brand-muted mt-1">Run a gap analysis to identify compliance obligations</p>
-            <Link href="/analyze" className="inline-block mt-4 px-4 py-2 bg-primary-500/20 text-primary-400 rounded-lg text-sm hover:bg-primary-500/30 transition-colors">
-              Run Analysis
-            </Link>
+          <div className="py-8">
+            <div className="text-center mb-6">
+              <Shield className="w-10 h-10 text-brand-border mx-auto mb-3" />
+              <p className="text-brand-text-muted font-medium">No open gaps yet</p>
+              <p className="text-sm text-brand-text-muted/60 mt-1">Choose a framework below to run your first gap analysis</p>
+            </div>
+            <div className="grid grid-cols-2 gap-3 max-w-lg mx-auto">
+              {[
+                { id: 'eu-ai-act', name: 'EU AI Act', tagline: 'Transparency & high-risk AI obligations' },
+                { id: 'gdpr', name: 'GDPR', tagline: 'Data processing & privacy rights' },
+                { id: 'dora', name: 'DORA', tagline: 'ICT resilience for financial entities' },
+                { id: 'soc2', name: 'SOC 2', tagline: 'Access controls & security criteria' },
+              ].map((fw) => (
+                <Link key={fw.id} href={`/analyze?sample=${fw.id}`}>
+                  <div className="p-4 bg-brand-bg border border-brand-border rounded-lg hover:border-primary-500/40 hover:bg-primary-500/5 transition-all cursor-pointer h-full">
+                    <p className="text-xs font-bold text-primary-400 uppercase tracking-wide mb-1">{fw.name}</p>
+                    <p className="text-xs text-brand-text-muted leading-snug">{fw.tagline}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         ) : (
           <div className="space-y-3">

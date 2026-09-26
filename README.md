@@ -2,6 +2,36 @@
 
 **AI-native regulatory compliance intelligence for AI companies and fintechs — gap analysis in seconds, not weeks**
 
+## Demo
+
+> Interactive terminal demo — [view the full case study](https://emmanuelzyronis.vercel.app/work/ark-comply)
+
+```text
+$ curl -s -X POST http://localhost:3001/api/analyze \
+  -d '{"text":"EU AI Act Article 13","framework":"eu-ai-act"}' | jq .
+
+Analyzing obligations against EU AI Act Article 13 ...
+
+{
+  "article": "Article 13 — Transparency obligations",
+  "findings": [
+    {
+      "obligation": "Ensure sufficient transparency of operation",
+      "severity": "Critical",
+      "status": "Gap",
+      "recommended_action": "Draft transparency statement covering model architecture and decision factors"
+    },
+    {
+      "obligation": "Instructions for use shall include provider contact details",
+      "severity": "Medium",
+      "status": "Partial",
+      "recommended_action": "Add registered business address to instructions for use"
+    }
+  ],
+  "summary": { "critical": 2, "high": 3, "medium": 2, "low": 1 }
+}
+```
+
 ## Problem
 
 EU AI Act is fully operative in 2026. US states pass AI liability bills at 2-3 per month. Fintech compliance teams spend 35-40% of work hours manually monitoring 200+ global regulators for rule changes and mapping those changes to internal controls and contracts. Thomson Reuters Regulatory Intelligence and Ascent RegTech cost $50K+/year — inaccessible to every startup and scale-up that needs this most.

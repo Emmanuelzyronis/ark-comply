@@ -28,6 +28,11 @@ export default async function gapsRoutes(app: FastifyInstance) {
     );
     const analysisId = analysisResult.rows[0].id;
 
+    if (!process.env.ANTHROPIC_API_KEY) {
+      await db.query("UPDATE gap_analyses SET analysis_status = 'error' WHERE id = $1", [analysisId]);
+      return reply.status(503).send({ error: 'Claude API key not configured. Contact the administrator.' });
+    }
+
     try {
       const result = await analyzeRegulation(text, controls);
 

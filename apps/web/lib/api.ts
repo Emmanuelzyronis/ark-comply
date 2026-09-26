@@ -1,3 +1,10 @@
+export class ApiError extends Error {
+  constructor(message: string, public readonly status: number) {
+    super(message);
+    this.name = 'ApiError';
+  }
+}
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 function getToken(): string | null {
@@ -17,7 +24,6 @@ async function request<T>(
 
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
-  // Don't set Content-Type for FormData (let browser set it with boundary)
   if (options.body instanceof FormData) {
     delete headers['Content-Type'];
   }
@@ -28,8 +34,8 @@ async function request<T>(
   });
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ error: 'Request failed' }));
-    throw new Error(error.error || error.message || `HTTP ${response.status}`);
+    const body = await response.json().catch(() => ({ error: 'Request failed' }));
+    throw new ApiError(body.error || body.message || `HTTP ${response.status}`, response.status);
   }
 
   return response.json();
